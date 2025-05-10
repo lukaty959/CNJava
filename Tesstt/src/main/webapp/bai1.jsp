@@ -3,43 +3,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Kiểm tra tam giác</title>
+<meta charset="UTF-8">
+<title>Insert title here</title>
 </head>
 <body>
-    <h2>Kiểm tra 3 cạnh có tạo thành tam giác không</h2>
+<h2>Giải phương trình bậc hai: ax² + bx + c = 0</h2>
 
-    <form action="triangleCheck.jsp" method="post">
-        Cạnh a: <input type="number" name="a" step="any" required><br><br>
-        Cạnh b: <input type="number" name="b" step="any" required><br><br>
-        Cạnh c: <input type="number" name="c" step="any" required><br><br>
-        <input type="submit" value="Kiểm tra">
+    <form method="post">
+        a: <input type="text" name="a" required><br>
+        b: <input type="text" name="b" required><br>
+        c: <input type="text" name="c" required><br>
+        <input type="submit" value="Giải">
     </form>
 
-    <%
-        String sa = request.getParameter("a");
-        String sb = request.getParameter("b");
-        String sc = request.getParameter("c");
+<%
+    String aStr = request.getParameter("a");
+    String bStr = request.getParameter("b");
+    String cStr = request.getParameter("c");
 
-        if (sa != null && sb != null && sc != null) {
-            try {
-                double a = Double.parseDouble(sa);
-                double b = Double.parseDouble(sb);
-                double c = Double.parseDouble(sc);
+    if (aStr != null && bStr != null && cStr != null) {
+        try {
+            double a = Double.parseDouble(aStr);
+            double b = Double.parseDouble(bStr);
+            double c = Double.parseDouble(cStr);
 
-                if (a > 0 && b > 0 && c > 0) {
-                    if (a + b > c && a + c > b && b + c > a) {
-                        out.println("<p style='color:green;'>Ba cạnh (" + a + ", " + b + ", " + c + ") tạo thành một tam giác hợp lệ.</p>");
+            if (a == 0) {
+                if (b == 0) {
+                    if (c == 0) {
+                        out.println("<p>Phương trình có vô số nghiệm.</p>");
                     } else {
-                        out.println("<p style='color:red;'>Ba cạnh (" + a + ", " + b + ", " + c + ") không tạo thành một tam giác.</p>");
+                        out.println("<p>Phương trình vô nghiệm.</p>");
                     }
                 } else {
-                    out.println("<p style='color:red;'>Các cạnh phải lớn hơn 0.</p>");
+                    double x = -c / b;
+                    out.println("<p>Phương trình có một nghiệm: x = " + x + "</p>");
                 }
-            } catch (NumberFormatException e) {
-                out.println("<p style='color:red;'>Vui lòng nhập số hợp lệ.</p>");
+            } else {
+                double delta = b * b - 4 * a * c;
+                if (delta > 0) {
+                    double x1 = (-b + Math.sqrt(delta)) / (2 * a);
+                    double x2 = (-b - Math.sqrt(delta)) / (2 * a);
+                    out.println("<p>Phương trình có hai nghiệm phân biệt:</p>");
+                    out.println("<p>x1 = " + x1 + "</p>");
+                    out.println("<p>x2 = " + x2 + "</p>");
+                } else if (delta == 0) {
+                    double x = -b / (2 * a);
+                    out.println("<p>Phương trình có nghiệm kép: x = " + x + "</p>");
+                } else {
+                    out.println("<p>Phương trình vô nghiệm (vì delta < 0).</p>");
+                }
             }
+        } catch (NumberFormatException e) {
+            out.println("<p>Vui lòng nhập đúng định dạng số.</p>");
         }
-    %>
+    }
+%>
 </body>
 </html>
